@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="obsidian-tempest">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <title>Priyanshu Roy | AI & ML Security Engineer</title>
+    <meta name="description" content="Portfolio of Priyanshu Roy: Engineering secure, explainable, and crash-resilient RAG and Edge AI architectures." />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/src/styles/main.css" />
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐉</text></svg>">
+
+    <style>
+      html, body {
+        background: transparent !important;
+        background-color: transparent !important;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* Prevents horizontal scrollbar from shake effects */
+      }
+      
+      #scroll-container {
+        position: relative;
+        z-index: 10; /* Ensures UI is above the canvas */
+        background: transparent !important;
+      }
+
+      /* Base layout for the sections so they span the screen */
+      .viewport-section {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <div id="global-loader" class="loader-overlay">
+      <div class="loader-content">
+        <div class="magitech-spinner"></div>
+        <h2 class="loader-text">ESTABLISHING SECURE CONNECTION</h2>
+        <div class="loader-subtext">Initializing Edge Inference...</div>
+      </div>
+    </div>
+
+    <canvas id="webgl-canvas" class="webgl-canvas z-canvas"></canvas>
+
+    <main id="scroll-container" class="ui-container z-ui-base">
+      
+      <section id="intro" class="viewport-section"></section>
+
+      <section id="skills" class="viewport-section"></section>
+
+      <section id="projects" class="viewport-section"></section>
+
+      <section id="about" class="viewport-section"></section>
+
+      <section id="contact" class="viewport-section"></section>
+
+      <footer id="global-ui" class="fixed-ui"></footer>
+      
+    </main>
+
+    <div id="webgl-announcer" class="sr-only" aria-live="polite"></div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

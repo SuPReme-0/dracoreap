@@ -1,0 +1,844 @@
+/* =========================================
+   OBSIDIAN TEMPEST: MASTER CORE STYLES
+   v5.0 - Fully Restored & Upgraded Core
+   ========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* =========================================
+   1. VARIABLES & PALETTE (CATACLYSM FORGED)
+   ========================================= */
+:root {
+  /* Palette */
+  --color-void: #010103;
+  --color-abyss: #05070a;
+  --color-obsidian: #0a0b10;
+  --color-cyan: #00e5ff;
+  --color-cyan-glow: rgba(0, 229, 255, 0.4);
+  --color-magma: #ff3300;
+  --color-crimson: #aa0505;
+  --color-gold: #d4af37;
+  
+  --color-text-main: #f0f4f8;
+  --color-text-muted: #9aa0b0;
+
+  /* Typography */
+  --font-display: 'Cinzel Decorative', 'Cinzel', serif;
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+
+  /* Layout Constants */
+  --container-max: 1440px;
+  --section-spacing: clamp(4rem, 10vw, 8rem);
+}
+
+/* =========================================
+   2. RESET & BASE
+   ========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* CRITICAL FIX: Force transparency so the WebGL Canvas is the absolute background */
+html, body {
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--color-text-main);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  scroll-behavior: auto; 
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================
+   3. TYPOGRAPHY
+   ========================================= */
+/* Heavy text shadows ensure text is readable even if the 3D background flashes */
+h1, h2, h3, h4, h5, h6, p, a, span {
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--color-text-main);
+  margin-bottom: 1rem;
+}
+
+h1 { 
+  font-family: var(--font-display); 
+  font-size: clamp(2.8rem, 6vw + 1rem, 6.5rem); 
+  letter-spacing: 0.05em; 
+  text-transform: uppercase; 
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.3), 0 4px 20px rgba(0,0,0,1);
+}
+
+h2 { 
+  font-size: clamp(2rem, 4vw + 0.5rem, 3.5rem); 
+}
+
+h3 { 
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem); 
+  color: var(--color-cyan); 
+}
+
+h4 { 
+  font-size: clamp(1.1rem, 2vw, 1.5rem); 
+  text-transform: uppercase; 
+  letter-spacing: 0.1em; 
+  color: var(--color-gold);
+}
+
+p { 
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.2vw, 1.15rem); 
+  line-height: 1.7; 
+  color: var(--color-text-muted); 
+  margin-bottom: 1.2rem; 
+}
+
+a { 
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-cyan); 
+  text-decoration: none; 
+  transition: color 0.3s ease, text-shadow 0.3s ease; 
+}
+
+a:hover { 
+  color: #ffffff; 
+  text-shadow: 0 0 12px var(--color-cyan), 0 0 24px var(--color-cyan); 
+}
+
+/* Code Blocks */
+code, kbd, pre {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+pre {
+  background: rgba(10, 11, 16, 0.85);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  padding: 1.2rem; 
+  border-radius: 8px; 
+  overflow-x: auto;
+  color: var(--color-cyan);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9), 0 8px 24px rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+}
+
+code { 
+  background: rgba(0, 229, 255, 0.1); 
+  padding: 0.2em 0.4em; 
+  border-radius: 4px; 
+  color: #fff; 
+}
+
+/* =========================================
+   4. LAYOUT & Z-INDEX ARCHITECTURE
+   ========================================= */
+/* Global Z-Index */
+.z-canvas    { z-index: -1 !important; position: fixed; inset: 0; pointer-events: none; } 
+.z-ui-base   { z-index: 10; position: relative; }  
+.z-glass     { z-index: 20; }  
+.z-overlay   { z-index: 50; }  
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  pointer-events: auto; /* Re-enable clicks inside the content container */
+}
+
+/* Each viewport section must take up at least a full screen for cinematic pacing */
+.viewport-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh; 
+  padding-top: var(--section-spacing);
+  padding-bottom: var(--section-spacing);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: none; /* Allows clicks to pass through empty space to the canvas */
+  background: transparent !important;
+}
+
+/* Ensure #intro is specifically forced to the top */
+#intro { 
+  z-index: 20; 
+  pointer-events: auto; 
+}
+
+/* Responsive Grid Architecture */
+.grid-auto { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); 
+  gap: clamp(1.5rem, 3vw, 2.5rem); 
+}
+
+.grid-2 { 
+  display: grid; 
+  grid-template-columns: 1fr; 
+  gap: 2rem; 
+}
+
+@media (min-width: 992px) { 
+  .grid-2 { grid-template-columns: 1fr 1fr; } 
+}
+
+/* Flexbox Utilities */
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-col { display: flex; flex-direction: column; }
+
+.gap-sm { gap: 0.5rem; }
+.gap-md { gap: 1.2rem; }
+.gap-lg { gap: 2.5rem; }
+
+/* Mobile Touch Optimizations */
+@media (max-width: 768px) {
+  button, a, .touch-target { 
+    min-height: 44px; 
+    min-width: 44px; 
+  }
+  .pointer-passthrough { pointer-events: none; }
+  .pointer-passthrough > * { pointer-events: auto; }
+  :hover { transform: none !important; } 
+}
+
+@media (min-width: 1440px) {
+  .container { max-width: 1600px; }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --border-subtle: 1px solid rgba(255,255,255,0.4);
+    --color-text-muted: #a0a0b0;
+  }
+}
+
+/* =========================================
+   5. ACCESSIBILITY & UTILITIES
+   ========================================= */
+:focus { 
+  outline: none; 
+}
+
+body.keyboard-navigation :focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 4px; 
+  border-radius: 4px;
+  box-shadow: 0 0 0 4px rgba(0, 255, 255, 0.2);
+}
+
+.sr-only {
+  position: absolute !important; 
+  width: 1px !important; 
+  height: 1px !important;
+  padding: 0 !important; 
+  margin: -1px !important; 
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important; 
+  white-space: nowrap !important; 
+  border: 0 !important;
+}
+
+.gpu-accel { 
+  transform: translateZ(0); 
+  will-change: transform, opacity; 
+  contain: layout style; 
+}
+
+.truncate { 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+}
+
+.line-clamp-2 { 
+  display: -webkit-box; 
+  -webkit-line-clamp: 2; 
+  line-clamp: 2; 
+  -webkit-box-orient: vertical; 
+  overflow: hidden; 
+}
+
+.line-clamp-3 { 
+  display: -webkit-box; 
+  -webkit-line-clamp: 3; 
+  line-clamp: 3; 
+  -webkit-box-orient: vertical; 
+  overflow: hidden; 
+}
+
+.content-auto { 
+  content-visibility: auto; 
+  contain-intrinsic-size: 1000px;
+}
+
+/* =========================================
+   6. ANIMATIONS
+   ========================================= */
+@keyframes cursor-blink { 
+  0%, 100% { opacity: 1; } 
+  50% { opacity: 0; } 
+}
+
+.cursor-blink { 
+  animation: cursor-blink 1s infinite; 
+}
+
+@keyframes spin { 
+  to { transform: rotate(360deg); } 
+}
+
+@keyframes pulse-magma {
+  0%, 100% { box-shadow: 0 0 15px rgba(255, 51, 0, 0.4), inset 0 0 20px rgba(170, 5, 5, 0.5); }
+  50% { box-shadow: 0 0 30px rgba(255, 51, 0, 0.8), inset 0 0 30px rgba(255, 51, 0, 0.8); }
+}
+
+.magitech-spinner {
+  width: 60px; 
+  height: 60px;
+  border: 3px solid rgba(0, 229, 255, 0.1);
+  border-top-color: var(--color-cyan);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 15px var(--color-cyan-glow);
+}
+
+@keyframes shimmer-sweep {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.shimmer-bg {
+  background: linear-gradient(90deg, transparent 25%, rgba(0, 255, 255, 0.15) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer-sweep 2.5s infinite linear;
+}
+
+/* Reduced Motion Compliance overrides */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .shimmer-bg {
+    animation: none;
+    background: rgba(0, 255, 255, 0.05);
+  }
+}
+
+/* =========================================
+   7. HIGH-TECH UI (OBSIDIAN GLASS)
+   ========================================= */
+.magitech-glass-card {
+  position: relative;
+  background: rgba(8, 9, 14, 0.65);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 229, 255, 0.05);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  will-change: transform, filter, opacity;
+  padding: clamp(2rem, 4vw, 3rem);
+  --mouse-x: -1000px;
+  --mouse-y: -1000px;
+  --glare-opacity: 0;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  pointer-events: auto;
+}
+
+.magitech-glass-card:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(0, 229, 255, 0.1);
+}
+
+/* Data-Stream Dynamic Border Glow */
+.magitech-glass-card::before {
+  content: ""; 
+  position: absolute; 
+  inset: 0; 
+  border-radius: inherit; 
+  padding: 1.5px;
+  background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(0, 255, 255, 0.6), transparent 40%);
+  
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  
+  opacity: var(--glare-opacity);
+  transition: opacity 0.5s ease;
+  pointer-events: none; 
+  z-index: 10;
+}
+
+/* Inner Holographic Glare */
+.magitech-glass-card::after {
+  content: ""; 
+  position: absolute; 
+  inset: 0; 
+  border-radius: inherit;
+  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
+  opacity: var(--glare-opacity); 
+  transition: opacity 0.5s ease; 
+  pointer-events: none; 
+  z-index: 1;
+}
+
+.magitech-glass-card > * { 
+  position: relative; 
+  z-index: 2; 
+}
+
+/* Live Preview Frame */
+.live-preview-container {
+  position: relative; 
+  width: 100%; 
+  aspect-ratio: 16 / 9; 
+  border-radius: 12px;
+  overflow: hidden; 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #000; 
+  pointer-events: auto;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.preview-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.overlay-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.obsidian-btn {
+  display: inline-flex; 
+  align-items: center; 
+  gap: 0.5rem; 
+  padding: 0.8rem 1.8rem;
+  background: linear-gradient(180deg, rgba(20, 22, 30, 0.8), rgba(5, 7, 10, 0.9)); 
+  border: 1px solid var(--color-cyan);
+  color: var(--color-cyan); 
+  border-radius: 4px; 
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase; 
+  letter-spacing: 1px;
+  cursor: pointer; 
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
+}
+
+.obsidian-btn:hover { 
+  background: rgba(0, 229, 255, 0.15); 
+  color: #fff;
+  box-shadow: 0 0 20px var(--color-cyan-glow), inset 0 0 10px var(--color-cyan-glow); 
+  text-shadow: 0 0 8px #fff;
+}
+
+.obsidian-btn svg { 
+  width: 18px; 
+  height: 18px; 
+}
+
+.obsidian-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: var(--color-obsidian);
+  color: var(--color-cyan);
+  font-family: var(--font-mono);
+  z-index: 5;
+}
+
+.cyan-ring {
+  width: 40px; 
+  height: 40px;
+  border: 2px solid var(--color-cyan-glow);
+  border-top-color: var(--color-cyan);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* =========================================
+   8. SCORCHED SLATES & MAGMA SEALS
+   ========================================= */
+.parchment-card {
+  position: relative; 
+  padding: 3rem; 
+  border-radius: 8px; 
+  color: #e0e4eb; 
+  font-family: var(--font-heading);
+  background: linear-gradient(135deg, rgba(25, 26, 33, 0.9) 0%, rgba(10, 11, 15, 0.95) 100%);
+  border: 1px solid rgba(255, 51, 0, 0.2);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), inset 0 0 60px rgba(170, 5, 5, 0.15);
+  pointer-events: auto;
+}
+
+.parchment-card h2, .parchment-card h3 { 
+  color: var(--color-magma); 
+  text-shadow: 0 0 15px rgba(255, 51, 0, 0.4);
+}
+
+.parchment-claw-border { 
+  border: 2px solid rgba(255, 51, 0, 0.3); 
+  border-radius: 6px;
+}
+
+.parchment-claw-border::after { 
+  content: ''; 
+  position: absolute; 
+  inset: 6px; 
+  border: 1px dashed rgba(0, 229, 255, 0.2); 
+  pointer-events: none; 
+}
+
+/* Magma Seal Button */
+.medieval-seal-btn, .magitech-seal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  font-family: var(--font-heading);
+  pointer-events: auto;
+}
+
+.seal-wax-container {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  border-radius: 50%;
+  animation: pulse-magma 4s infinite;
+  will-change: transform, box-shadow;
+}
+
+.tech-ring {
+  position: absolute;
+  inset: -12px;
+  width: calc(100% + 24px);
+  height: calc(100% + 24px);
+  pointer-events: none;
+}
+
+.seal-wax-outer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, #1a1a24, #050508);
+  border-radius: 50%;
+  border: 2px solid #333;
+  box-shadow: inset 0 0 15px rgba(0,0,0,1);
+}
+
+.seal-wax-inner {
+  position: absolute;
+  inset: 6px;
+  background: radial-gradient(circle at 50% 50%, var(--color-magma), var(--color-crimson), #2a0000);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 100, 100, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 4px 15px rgba(0,0,0,0.8);
+  z-index: 2;
+  overflow: hidden;
+}
+
+.seal-icon, .icon-main {
+  width: 28px;
+  height: 28px;
+  color: #fff;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
+}
+
+.icon-glitch-stack {
+  position: relative;
+  width: 28px;
+  height: 28px;
+}
+
+.glitch-cyan, .glitch-red {
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.seal-ripple {
+  position: absolute;
+  top: 0; left: 0;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 200, 200, 0.4);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 3;
+}
+
+.holo-scanline {
+  position: absolute;
+  top: 0; left: -20%;
+  width: 140%; height: 4px;
+  background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
+  box-shadow: 0 0 8px var(--color-cyan);
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.seal-text {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+}
+
+.medieval-seal-btn:hover .seal-text, .magitech-seal-btn:hover .seal-text {
+  color: var(--color-magma);
+  text-shadow: 0 0 15px rgba(255, 51, 0, 0.6);
+}
+
+.medieval-seal-btn:focus-visible .seal-wax-container {
+  outline: 3px solid var(--color-cyan);
+  outline-offset: 4px;
+}
+
+/* =========================================
+   9. MAGITECH INTERACTIVE GLOW
+   ========================================= */
+.magitech-interactive {
+  position: relative;
+  transform-style: preserve-3d; 
+  will-change: transform, filter;
+  --mouse-x: -1000px;
+  --mouse-y: -1000px;
+}
+
+.magitech-interactive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none; 
+  z-index: 1; 
+  background: radial-gradient(
+    circle 150px at var(--mouse-x) var(--mouse-y), 
+    rgba(255, 51, 0, 0.15), 
+    transparent 80%
+  );
+}
+
+.magitech-interactive:hover::before {
+  opacity: 1;
+}
+
+.magitech-interactive > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================================
+   10. CYBER-SIGILS & SOCIAL EMBLEMS
+   ========================================= */
+.social-emblem-list {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  pointer-events: auto;
+}
+
+.obsidian-emblem, .magitech-emblem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(145deg, #161822, var(--color-abyss));
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 12px;
+  color: var(--color-text-main);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.obsidian-emblem:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-cyan);
+  box-shadow: 0 12px 25px rgba(0, 229, 255, 0.2);
+  color: var(--color-cyan);
+}
+
+.obsidian-emblem svg {
+  width: 24px; 
+  height: 24px;
+  z-index: 2;
+}
+
+.emblem-sheen, .emblem-flare {
+  position: absolute;
+  width: 100%; 
+  height: 100%;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.2) 0%, transparent 70%);
+  opacity: 0;
+  mix-blend-mode: screen;
+  transform: translateX(-100%); 
+  z-index: 1;
+}
+
+/* =========================================
+   11. SECTION-SPECIFIC LAYOUTS
+   ========================================= */
+/* Intro Section Cinematic Overlay */
+.intro-cinematic-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 100;
+  background: radial-gradient(circle at center, transparent 0%, rgba(5, 5, 8, 0.8) 100%);
+}
+
+.intro-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 800px;
+  padding: 2rem;
+}
+
+.dragon-tagline-container {
+  font-family: var(--font-mono);
+  color: var(--color-cyan);
+  font-size: 1.1rem;
+  height: 1.5rem;
+}
+
+/* Projects Section Layout */
+.project-row {
+  width: 100%;
+}
+
+.project-glass-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0 !important; 
+  overflow: hidden;
+}
+
+.project-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem;
+}
+
+.project-preview-target {
+  flex: 1;
+  min-height: 300px;
+}
+
+@media (min-width: 992px) {
+  .project-glass-container {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  
+  .row-reversed .project-glass-container {
+    flex-direction: row-reverse;
+  }
+  
+  .project-info { 
+    flex: 0.4; 
+  }
+  
+  .project-preview-target { 
+    flex: 0.6; 
+    min-height: 450px; 
+    border-left: 1px solid rgba(255,255,255,0.1); 
+  }
+  
+  .row-reversed .project-preview-target { 
+    border-left: none; 
+    border-right: 1px solid rgba(255,255,255,0.1); 
+  }
+}
+
+/* About Section */
+@media (min-width: 768px) {
+  .about-grid {
+    grid-template-columns: 250px 1fr;
+  }
+}
+
+/* =========================================
+   12. GLOBAL LOADER
+   ========================================= */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--color-abyss);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.loader-text {
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  color: var(--color-cyan);
+  letter-spacing: 4px;
+  font-size: 0.9rem;
+}
