@@ -287,6 +287,54 @@
         "dashboard_load": "340ms via optimized materialized views"
       },
       "layout": "left"
+    },
+    {
+      "id": "civiclink",
+      "title": "CivicLink",
+      "status": "completed",
+      "role": "Lead Architect & AI Systems Engineer",
+      "timeline": { "start": "2026-04", "end": "2026-05", "current": false },
+      "repo_url": "https://github.com/SuPReme-0/CivicLink",
+      "preview_url": "https://civic-link-eta.vercel.app/",
+      "thumbnail_url": "/assets/projects/civiclink.webp",
+      "description": "An autonomous, multi-agent AI pipeline engineered to process, verify, and resolve citizen grievances at scale. Built with a stateful LangGraph architecture, it features Vision-Language Model (VLM) forensics, 70B LLM-powered geolocation, automated OSINT scraping for official contacts, and legally robust draft generation.",
+      "detailed_architecture": {
+        "core_components": [
+          "Stateful Agentic Workflow (LangGraph) — A self-healing state machine managing the lifecycle of a grievance. Pauses for human clarification on ambiguous inputs and resumes seamlessly, ensuring zero lost context.",
+          "Omniscient Geo-Resolver — Utilizes Llama-3.3-70B to bypass brittle geocoders, instantly mapping hyper-local landmarks to strict Indian administrative districts and municipal hierarchies.",
+          "Autonomous OSINT Contact Spider — Deploys Headless Playwright to dynamically geofence and crawl government directories. Extracts and validates official email addresses, updating a Fast-Path DB cache.",
+          "VLM Forensic Engine — Analyzes user-uploaded images via Gemini Pro/Flash to extract visual severity context, detect AI manipulation, and merge multimodal data into the Retrieval-Augmented Generation (RAG) pipeline.",
+          "Legal Knowledge Base (RAG) — Injects relevant local statutes and municipal acts into the drafting process to generate formal, legally sound official correspondence from informal citizen input."
+        ],
+        "optimization_highlights": [
+          "Implemented a native SQLite rate limiter and distributed tracing, bypassing reliance on external Redis clusters while maintaining strict API limits.",
+          "Architected a Multi-Provider Fallback system (Groq primary, Gemini secondary) functioning as a circuit breaker to ensure 100% uptime during rate limits or API degradation.",
+          "Decoupled Next.js UI from backend network constraints via a custom direct-to-cloud ApiClient, eliminating Vercel's 15-second serverless timeout limitations for long-running LangGraph executions."
+        ],
+        "security_measures": [
+          "Complete PII Redaction pipeline executed before any data reaches external AI models, ensuring strict DPDP and GDPR privacy compliance.",
+          "Immutable Audit Trails generated for every routing decision, confidence score, and dispatch attempt, guaranteeing full transparency for administrative reporting.",
+          "DKIM/SPF signed email dispatch paired with idempotent delivery protocols to prevent duplicate complaints from overwhelming government inboxes."
+        ]
+      },
+      "tech_stack": [
+        "Python 3.11",
+        "FastAPI",
+        "LangGraph",
+        "Groq (Llama-3.3-70B)",
+        "Google Gemini",
+        "Supabase (PostgreSQL + pgvector)",
+        "Prisma Client Python",
+        "Playwright",
+        "Next.js 15 (App Router)"
+      ],
+      "metrics": {
+        "end_to_end_processing": "Sub-60s from raw WhatsApp-style input to verified, signed government dispatch",
+        "langgraph_node_latency": "~500ms average execution time per inference cycle via Groq optimization",
+        "delivery_accuracy": "99.8% precision in mapping hyper-local complaints to correct municipal wards",
+        "multi_provider_uptime": "100% inference availability via autonomous Groq-to-Gemini failover"
+      },
+      "layout": "right"
     }
   ],
   "about": {
