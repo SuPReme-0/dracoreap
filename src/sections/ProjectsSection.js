@@ -255,7 +255,7 @@ export class ProjectsSection {
                 <header>
                   <span class="project-role">◈ ${project.role}</span>
                   <h3 class="project-name">
-                    <a href="${project.repo_url || project.site_url}" target="_blank" rel="noopener noreferrer">${project.title}</a>
+                    <a href="${project.preview_url}" target="_blank" rel="noopener noreferrer">${project.title}</a>
                   </h3>
                 </header>
                 
